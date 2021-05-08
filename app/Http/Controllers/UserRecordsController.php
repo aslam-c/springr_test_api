@@ -21,7 +21,7 @@ class UserRecordsController extends Controller
             ];
         } else {
             $data = [
-                'status' => 404,
+                'status' => 499,
                 'response' => 'No records found'
             ];
         }
@@ -48,9 +48,12 @@ class UserRecordsController extends Controller
             $inputs = $v->validated();
             $record = UserRecord::create($inputs);
             if ($r->hasFile('avatar')) {
-                $path = $r->file('avatar')->store('profile');
+                $path = $r->file('avatar')->store('public');
+                $path = explode("/", $path)[1];
+
+                $record->update(['avatar' => $path]);
             }
-            $record->update(['avatar' => $path]);
+
             $data = ['status' => 201, 'response' => 'record created'];
         }
         return response()->json($data, $data['status']);
