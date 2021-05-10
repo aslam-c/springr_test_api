@@ -13,7 +13,7 @@ class UserRecordsController extends Controller
     //list records
     public function index()
     {
-        $records = UserRecord::get();
+        $records = UserRecord::select('name','email','experience','avatar')->get();
         if ($records->count() > 0) {
             $data = [
                 'status' => 200,
